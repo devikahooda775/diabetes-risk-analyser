@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diabetes Predictor</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🩺 Diabetes Risk Predictor</h1>
+
+      <form id="diabetesForm">
+        <input type="text" id="name" placeholder="Name" required />
+        <input type="number" id="age" placeholder="Age" required />
+        <input type="number" id="glucose" placeholder="Glucose Level" required />
+        <input type="number" id="bloodPressure" placeholder="Blood Pressure" required />
+        <input type="number" id="bmi" placeholder="BMI" required />
+        <input type="number" id="insulin" placeholder="Insulin Level" required />
+        <button type="submit">Predict</button>
+        <button onclick="window.location.href='dashboard.html'">📊 View Dashboard</button>
+
+      </form>
+
+      <div id="result"></div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+  <!-- ✅ Add this -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 font-src 'self' https://fonts.gstatic.com;
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+                 script-src 'self' 'unsafe-inline';
+                 connect-src 'self' http://localhost:5000;">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f0f8ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 400px;
+      margin-top: 20px;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #chatReply {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>🩺 Diabetes Risk Dashboard</h1>
+  
+  <div class="container">
+    <p><strong>Patient Name:</strong> <span id="patientName">Loading...</span></p>
+    <p><strong>Risk Level:</strong> <span id="riskLevel">Loading...</span></p>
+    <p><strong>Symptoms:</strong> <span id="symptoms">Loading...</span></p>
+    <p><strong>Prediction:</strong> <span id="prediction">Loading...</span></p>
+
+    <button id="chatBtn">💬 Ask AI Health Assistant</button>
+    <div id="chatReply"></div>
+  </div>
+
+  <script>
+    // Example patient info (You can fetch from your DB if needed)
+    const userId = 1;
+
+    // Load patient info (you could modify this to fetch real data)
+    async function loadPatient() {
+      const res = await fetch(`/api/patient/${userId}`);
+      const data = await res.json();
+      document.getElementById("patientName").textContent = data.name;
+      document.getElementById("riskLevel").textContent = data.risk;
+      document.getElementById("symptoms").textContent = data.symptoms;
+      document.getElementById("prediction").textContent = data.prediction;
+    }
+
+    document.getElementById("chatBtn").addEventListener("click", async () => {
+      document.getElementById("chatReply").textContent = "Thinking...";
+      const res = await fetch("/api/chatbot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId })
+      });
+      const data = await res.json();
+      document.getElementById("chatReply").textContent = data.reply || "No reply received.";
+    });
+
+    loadPatient();
+  </script>
+</body>
+</html>
